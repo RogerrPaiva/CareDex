@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareDex · Solução gamificada CarePlus</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#E6F5EF;--card:#fff;--ink:#0F4A3A;--mut:#5F8176;--line:#CFE6DC;--g1:#17936B;--g2:#8CC84B;--soft:#EEF9F4;
+--N:#7C6CF0;--S:#2E9CCA;--L:#F2894B;--O:#E0618B;--C:#E3A91E;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{--bg:#0B241D;--card:#10342A;--ink:#E4F5EE;--mut:#8FB5A8;--line:#1D4A3C;--soft:#0D2C24;color-scheme:dark}
+.tg{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:9px 16px;font:600 14px Outfit,sans-serif;cursor:pointer;min-height:40px;white-space:nowrap}
+@media(prefers-reduced-motion:no-preference){body,.card,.pet,.zone,.tabs button,.tg{transition:background-color .3s,color .3s,border-color .3s}}
+*{box-sizing:border-box;margin:0}
+body{font-family:Outfit,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.shell{min-height:100vh}.brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:600;line-height:1}.brand small{display:block;font-size:11px;font-weight:400;color:var(--mut);margin-top:2px}
+.logo{padding:0 8px 40px}.logo b{font-size:25px;font-weight:600;display:flex;align-items:center;gap:8px}.logo small{display:block;font-size:11px;opacity:.85;margin-left:40px;margin-top:-4px}
+button:focus-visible{outline:3px solid #FFE27A;outline-offset:2px}
+main{padding:24px 28px 60px;max-width:1240px;width:100%;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.av{display:flex;gap:12px;align-items:center}.av i{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#7FD3A0,#17936B);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:700}
+.av small{color:var(--mut)}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:48px 44px;color:#fff;background:linear-gradient(110deg,#17936B,#4FAE62 55%,#8CC84B);display:grid;grid-template-columns:1.6fr 1fr;gap:24px;align-items:center}
+.hero:before{content:"";position:absolute;right:-60px;top:-80px;width:360px;height:360px;border-radius:50%;border:34px solid rgba(255,255,255,.13)}
+.hero h1{font-size:clamp(40px,6vw,66px);font-weight:500;line-height:1}
+.hero p{font-size:19px;font-weight:500;margin-top:12px;max-width:560px}
+.stat{position:relative;background:rgba(255,255,255,.18);border-radius:18px;padding:20px;backdrop-filter:blur(4px)}
+.stat b{font-size:46px;font-weight:600;line-height:1}.stat span{display:block;font-weight:600;margin-top:4px}
+.stats{display:flex;gap:22px}
+section{margin-top:28px;scroll-margin-top:12px}
+h2{font-size:28px;font-weight:600}.sub{color:var(--mut);margin:4px 0 16px;max-width:700px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ico{width:46px;height:46px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:24px;margin-bottom:10px}
+.card h3{font-size:18px;font-weight:600;margin-bottom:4px}.card p{color:var(--mut);font-size:15px}
+.step{position:relative}.step .n{position:absolute;right:16px;top:12px;font-size:34px;font-weight:700;color:var(--line)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:9px 16px;font:600 14px Outfit,sans-serif;cursor:pointer;min-height:40px}
+.tabs button.on{background:var(--g1);color:#fff;border-color:var(--g1)}
+.pets{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.pet{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--z);border-radius:18px;padding:18px}
+.face{width:100px;height:100px;border-radius:50%;background:color-mix(in srgb,var(--z) 26%,var(--card));display:grid;place-items:center;margin-bottom:10px}.spr{image-rendering:pixelated;display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+.row{border-top:1px solid var(--line);padding-top:9px;margin-top:9px;font-size:14px}.row b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:600}
+.pet.leg{border-style:dashed;border-top-style:dashed;opacity:.9}.pet.leg .face{background:var(--line);filter:grayscale(1) brightness(.5)}
+.cross{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-areas:". N .""O C L"". S .";gap:12px}
+.zone{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--z);border-radius:16px;padding:14px;cursor:pointer;text-align:left;color:var(--ink);font:inherit}
+.zone h3{font-size:17px;font-weight:600}.zone p{font-size:13px;color:var(--mut)}
+.pw{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pw .card strong{font-size:30px;font-weight:600;color:var(--g1);display:block}
+.liga{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+.rk{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.rk:last-child{border:0}.rk span:nth-child(2){flex:1;font-weight:600}.rk em{color:var(--mut);font-style:normal;font-size:14px}
+.band{margin-top:28px;border-radius:22px;padding:34px 40px;color:#fff;background:linear-gradient(110deg,#17936B,#8CC84B)}
+.band h2{font-size:30px}.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}.kp div{background:rgba(255,255,255,.18);border-radius:14px;padding:14px}.kp b{font-size:28px;display:block;font-weight:600}
+ul.ck{list-style:none;padding:0}ul.ck li{padding:6px 0 6px 28px;position:relative;font-size:15px;color:var(--mut)}ul.ck li:before{content:"✓";position:absolute;left:0;color:var(--g1);font-weight:700}
+.rsv{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.rsv button{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:99px;padding:6px 14px 6px 6px;font:600 14px Outfit,sans-serif;cursor:pointer;min-height:44px}.rsv button.on{border-color:var(--g1);background:var(--card);box-shadow:0 0 0 2px var(--g1)}.rsv .mini{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--z) 26%,var(--card))}.big{display:flex;gap:16px;align-items:center}.big .face{width:116px;height:116px;margin:0;flex:none}@media(prefers-reduced-motion:no-preference){.pet .spr,.big .spr,#hs .spr{animation:bob 1.2s steps(1) infinite}@keyframes bob{50%{transform:translateY(-3px)}}}
+.note{font-size:13px;color:var(--mut);margin-top:12px}
+.go{background:linear-gradient(110deg,#17936B,#8CC84B);color:#fff;border:0;border-radius:16px;padding:16px 34px;font:600 20px Outfit,sans-serif;cursor:pointer;min-height:56px;box-shadow:0 8px 20px rgba(23,147,107,.3)}.go:hover{filter:brightness(1.06)}
+.dexov{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;display:none}
+.dh{position:sticky;top:0;z-index:2;background:linear-gradient(110deg,#17936B,#4FAE62 55%,#8CC84B);color:#fff;padding:calc(16px + env(safe-area-inset-top,0px)) 28px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.dh h1{font-size:34px;font-weight:600;line-height:1}.dh p{font-weight:500;font-size:15px;margin-top:4px}
+.dw{max-width:1240px;margin:0 auto;padding:22px 28px 60px}
+.rg{margin-bottom:26px}.rh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-radius:16px 16px 0 0;padding:12px 18px;background:var(--z);color:var(--tc)}
+.rb{background:var(--card);border:2px solid var(--z);border-top:0;border-radius:0 0 16px 16px;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.dt{position:relative;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:10px 8px 12px;text-align:center;cursor:pointer;font:600 15px Outfit,sans-serif;color:var(--ink)}
+.dt:hover,.dt:focus-visible{border-color:var(--z);box-shadow:0 6px 16px rgba(0,0,0,.14)}
+.dt .no{position:absolute;left:10px;top:8px;font-size:12px;font-weight:700;color:var(--mut)}
+.dt .face{margin:8px auto 6px;width:96px;height:96px}.dt.lk .face{filter:grayscale(1) brightness(.65)}
+#dtip{position:fixed;z-index:60;width:270px;background:var(--card);color:var(--ink);border:2px solid var(--z);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.28);display:none;pointer-events:none}
+.pet,.dt{position:relative;overflow:hidden}
+.sp{position:absolute;font-style:normal;line-height:1;color:var(--sc,#ffd34d);text-shadow:0 0 6px var(--sc,#ffd34d);pointer-events:none;z-index:1}
+.sp.a{right:14px;top:10px;font-size:17px}.sp.b{right:40px;top:32px;font-size:11px}.sp.c{right:16px;top:56px;font-size:9px}
+.rare{--sc:#5fc3ff;box-shadow:0 0 0 1px color-mix(in srgb,var(--z) 55%,transparent),0 4px 16px color-mix(in srgb,var(--z) 30%,transparent)}
+.pet.leg,.dt.lg{--sc:#ffc93c;background-size:100% 100%,300% 300%;background-position:0 0,0% 50%;box-shadow:0 0 18px rgba(255,201,60,.4)}
+.pet.leg{border:3px solid transparent;opacity:1;background-image:linear-gradient(var(--card),var(--card)),linear-gradient(120deg,#ff6bb5,#ffd34d,#6ee7a8,#59b7ff,#b48cff,#ff6bb5)}
+.dt.lg{border:2px solid transparent;background-image:linear-gradient(var(--soft),var(--soft)),linear-gradient(120deg,#ff6bb5,#ffd34d,#6ee7a8,#59b7ff,#b48cff,#ff6bb5)}
+.pet.leg,.dt.lg{background-origin:border-box;background-clip:padding-box,border-box}
+.rare::after,.pet.leg::after,.dt.lg::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.4) 50%,transparent 62%);transform:translateX(-120%)}
+.chip.rr{background:linear-gradient(110deg,#d7f0ff,#fff,#cfe9ff);color:#12465e;border-color:#8cd0f5}
+.chip.lgc{background:linear-gradient(110deg,#ffe58a,#ffb3d9,#a9e6ff);color:#3a2b00;border-color:#f2c94c}
+@media(prefers-reduced-motion:no-preference){.rare::after,.pet.leg::after,.dt.lg::after{animation:shine 3.6s ease-in-out infinite}.sp{animation:tw 1.8s ease-in-out infinite}.sp.b{animation-delay:.6s}.sp.c{animation-delay:1.2s}.pet.leg,.dt.lg{animation:holo 5s linear infinite}
+@keyframes shine{0%,50%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+@keyframes tw{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes holo{from{background-position:0 0,0% 50%}to{background-position:0 0,100% 50%}}}
+@media(max-width:1000px){.g3,.pw,.liga{grid-template-columns:1fr}.g4,.kp{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr;padding:34px 24px}}
+@media(max-width:860px){main{padding:16px}.cross{grid-template-columns:1fr 1fr;grid-template-areas:"N N""O L""C C""S S"}}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style></head><body>
+<div class="shell">
+<main>
+<div class="top"><div class="brand"><svg width="36" height="36" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#17936B"/><path d="M3 18h7l3-8 5 14 3-8h8" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg><div>Care Plus<small>Part of Bupa · Gamificação de autocuidado</small></div></div><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><span class="chip">Protótipo conceitual</span><button class="tg" id="tg" aria-label="Alternar entre tema claro e escuro">🌙 Tema escuro</button></div></div>
+<div class="hero" id="s1"><div><h1>CareDex</h1><p>A cidade inteira vira um jogo de cuidado. Encontre Carezinhos em totens pelas zonas de São Paulo, monte sua coleção e ganhe poderes que fazem bem à sua saúde.</p></div>
+<div class="stat"><div class="stats"><div><b>10</b><span>Carezinhos</span></div><div><b>5</b><span>Regiões</span></div></div><div id="hs" style="display:flex;gap:4px;margin-top:12px;flex-wrap:wrap"></div><span style="font-weight:400;margin-top:8px;display:block">Mais pets lendários para quem completar cada região.</span></div></div>
+
+<section><h2>Por que a CareDex existe</h2><p class="sub">A CarePlus quer clientes que se cuidam todos os dias, não só quando ficam doentes. A CareDex transforma esse cuidado em hábito, usando colecionar como motivação.</p>
+<div class="g3"><div class="card"><div class="ico">🎯</div><h3>O desafio</h3><p>Muitas pessoas não têm o costume de beber água, se exercitar ou fazer consultas periódicas, e perdem o vínculo com a clínica entre uma visita e outra.</p></div>
+<div class="card"><div class="ico">🐾</div><h3>A ideia</h3><p>Carezinhos escondidos em totens NFC pela cidade. Para encontrá-los, a pessoa sai de casa, caminha e volta aos mesmos lugares todo mês.</p></div>
+<div class="card"><div class="ico">💚</div><h3>O resultado</h3><p>Mais movimento, mais consultas preventivas e uma relação contínua com a marca, com recompensas por constância e não por desempenho.</p></div></div></section>
+
+<section id="s2"><h2>Como funciona</h2><p class="sub">Quatro passos simples, do totem à recompensa.</p>
+<div class="g4"><div class="card step"><span class="n">1</span><div class="ico">🚶</div><h3>Vá até um CarePoint</h3><p>Totens instalados em parques, pontos culturais, clínicas, farmácias e universidades parceiras.</p></div>
+<div class="card step"><span class="n">2</span><div class="ico">📡</div><h3>Aproxime o celular</h3><p>A leitura NFC é segura e valida que a pessoa esteve no local. Sem NFC, um QR code faz o mesmo.</p></div>
+<div class="card step"><span class="n">3</span><div class="ico">🦫</div><h3>Encontre o Carezinho</h3><p>O pet é registrado na CareDex, com ficha, região de origem e o poder que ele libera.</p></div>
+<div class="card step"><span class="n">4</span><div class="ico">🔄</div><h3>Renove todo mês</h3><p>O poder dura 30 dias. Para reacendê-lo, é preciso revisitar o totem do pet, o que traz o hábito de volta.</p></div></div></section>
+
+<section id="s3"><h2>A CareDex: nossos Carezinhos</h2><p class="sub">Cada pet nasce de uma região e de um lugar querido da cidade, e libera um poder. Filtre por região para ver onde encontrar cada um.</p>
+<div class="tabs" id="tabs"></div><div class="pets" id="pets"></div>
+<p class="note">Sprites em pixel art criados como conceito para esta apresentação; a arte final dos Carezinhos pode evoluir com a equipe de design.</p></section>
+
+<section id="s4"><h2>Onde encontrar</h2><p class="sub">Cinco regiões, cada uma com seu time de pets. Clique em uma região para ver os pets dela na CareDex.</p>
+<div class="cross" id="cross"></div></section>
+
+<section id="s5"><h2>Poderes dos Carezinhos</h2><p class="sub">Benefícios pequenos de propósito: dão um empurrãozinho no hábito sem criar custo alto para a CarePlus. Não há descontos em dinheiro nem cupons.</p>
+<div class="g4"><div class="card"><div class="ico">💧</div><strong style="font-size:28px;color:var(--g1);font-weight:600">+20%</strong><h3>Boost de hábito</h3><p>Mais pontos em um tipo de missão. Capi-Zen (hidratação), Corujito (sono) e Bem-te-vi (consulta de rotina).</p></div>
+<div class="card"><div class="ico">👟</div><strong style="font-size:28px;color:var(--g1);font-weight:600">+15%</strong><h3>Boost de movimento</h3><p>Mais pontos ao se mexer. Onçarê (caminhadas) e Pitstop (exercício leve).</p></div>
+<div class="card"><div class="ico">📍</div><strong style="font-size:28px;color:var(--g1);font-weight:600">+5</strong><h3>Exploração</h3><p>CareCoins extras ao visitar um CarePoint. Tucanino e Grafiteco.</p></div>
+<div class="card"><div class="ico">🛡️</div><strong style="font-size:28px;color:var(--g1);font-weight:600">Custo zero</strong><h3>Sequência e estilo</h3><p>Escudo que perdoa 1 dia perdido por mês (Sabiazul) e molduras exclusivas no perfil (Tanukare e Pincelo).</p></div></div>
+<p class="note">Valores iniciais, ajustáveis com os dados do piloto. Os poderes só afetam recompensas e nunca a posição na Liga.</p></section>
+
+<section id="s5b"><h2>Um mascote equipado por vez</h2><p class="sub">Você pode ter vários Carezinhos na coleção, mas só um é o seu Parceiro Care. Escolher bem é parte da graça. Toque em um pet para equipar.</p>
+<div class="liga"><div class="card" id="eq"></div><div class="card"><h3>Regras do Parceiro Care</h3><ul class="ck"><li>Um Parceiro Care equipado por vez, e só o poder dele fica ativo.</li><li>O poder vale por 30 dias depois da visita ao totem de origem do pet.</li><li>Para reacender, é preciso visitar o totem de novo, todo mês.</li><li>A troca de mascote é liberada uma vez por dia, para manter o jogo equilibrado.</li><li>Os outros pets continuam na CareDex, prontos para quando você quiser trocar.</li></ul></div></div></section>
+
+<section id="s6"><h2>Liga Care e Selos</h2><p class="sub">Um ranking mensal que zera todo mês, para todos poderem recomeçar.</p>
+<div class="liga"><div class="card"><h3>Liga Care · outubro</h3><div class="rk"><span>🥇</span><span>Camila R.</span><em>Care Score 98</em></div><div class="rk"><span>🥈</span><span>Rafael T.</span><em>Care Score 94</em></div><div class="rk"><span>🥉</span><span>Joana M.</span><em>Care Score 91</em></div><div class="rk"><span>4</span><span>Lucas P.</span><em>Care Score 86</em></div><p class="note">Exemplo ilustrativo.</p></div>
+<div class="card"><h3>Selos Care</h3><ul class="ck"><li>Ouro, prata e bronze para o topo de cada divisão, todo mês.</li><li>O selo fica no perfil para sempre, mesmo com o ranking zerando.</li><li>O Care Score mede constância: dias ativos, variedade de hábitos e consultas em dia.</li><li>Divisões por nível (iniciante, regular e avançado) dão chance real a quem está começando.</li></ul></div></div></section>
+
+<div class="band" id="s7"><h2>O que a CarePlus ganha</h2><p style="margin-top:6px;max-width:700px;font-weight:500">Um canal de contato contínuo com o cliente, que incentiva a prevenção e leva as pessoas de volta à rede.</p>
+<div class="kp"><div><b>+15%</b>retorno à clínica em 12 meses</div><div><b>+20%</b>consultas preventivas</div><div><b>40%</b>com 4+ dias ativos por semana</div><div><b>3</b>totens visitados por mês</div></div>
+<p style="font-size:13px;margin-top:12px;opacity:.9">Metas sugeridas para um piloto de 6 meses, a validar com a CarePlus. Dados de saúde seguem a LGPD, com consentimento específico, e o ranking mostra apenas apelido e pontuação.</p></div>
+<section style="margin-top:28px"><div class="card" style="text-align:center;padding:34px 20px"><div id="cs" style="display:flex;justify-content:center;gap:2px;flex-wrap:wrap"></div><h2 style="margin-top:12px">Pronto para explorar a coleção completa?</h2><p class="sub" style="margin:6px auto 20px">Veja todos os Carezinhos numerados e divididos por região, como uma Pokédex da cidade.</p><button class="go" id="godex">📖 Visitar CareDex</button></div></section>
+</main></div>
+<div class="dexov" id="dexov" role="dialog" aria-modal="true" aria-label="CareDex"><div class="dh"><div><h1>CareDex</h1><p>15 registros: 10 Carezinhos e 5 lendários. Passe o mouse (ou toque) em um pet para ver os detalhes.</p></div><button class="tg" id="dclose">← Voltar</button></div><div class="dw" id="dbody"></div></div>
+<div id="dtip" role="tooltip"></div>
+<script>
+var N=24,K='#2e2742',W='#ffffff',PK='#ff9fb5';
+function mix(c,t,to){var n=parseInt(c.slice(1),16),r=n>>16,g=(n>>8)&255,b=n&255,m=parseInt(to.slice(1),16),R=m>>16,G=(m>>8)&255,B=m&255;
+return '#'+[r+(R-r)*t,g+(G-g)*t,b+(B-b)*t].map(function(v){return ('0'+Math.round(v).toString(16)).slice(-2)}).join('')}
+function dk(c,t){return mix(c,t,'#1a1030')}function lt(c,t){return mix(c,t,'#ffffff')}
+function newG(){var g=[];for(var y=0;y<N;y++){g.push(new Array(N).fill(null))}return g}
+function px(g,x,y,c){if(x>=0&&x<N&&y>=0&&y<N)g[y][x]=c}
+function mp(g,x,y,c){px(g,x,y,c);px(g,N-1-x,y,c)}
+function rect(g,x0,y0,x1,y1,c){for(var y=y0;y<=y1;y++)for(var x=x0;x<=x1;x++)px(g,x,y,c)}
+function ell(g,cx,cy,rx,ry,c,o){o=o||{};for(var y=0;y<N;y++)for(var x=0;x<N;x++){if(o.ymax!==undefined&&y>o.ymax)continue;if(o.ymin!==undefined&&y<o.ymin)continue;
+var dx=(x+.5-cx)/rx,dy=(y+.5-cy)/ry;if(dx*dx+dy*dy>1)continue;var col=c;
+if(!o.flat){if(dx*.55+dy*.8>.52)col=dk(c,.18);else if(dx*-.6+dy*-.7>.66)col=lt(c,.22)}px(g,x,y,col)}}
+function mell(g,cx,cy,rx,ry,c,o){ell(g,cx,cy,rx,ry,c,o);ell(g,N-cx,cy,rx,ry,c,o)}
+function tri(g,x1,y1,x2,y2,x3,y3,c){var d=(y2-y3)*(x1-x3)+(x3-x2)*(y1-y3);for(var y=0;y<N;y++)for(var x=0;x<N;x++){var X=x+.5,Y=y+.5;
+var a=((y2-y3)*(X-x3)+(x3-x2)*(Y-y3))/d,b=((y3-y1)*(X-x3)+(x1-x3)*(Y-y3))/d,e=1-a-b;if(a>=-.02&&b>=-.02&&e>=-.02)px(g,x,y,c)}}
+function mtri(g,x1,y1,x2,y2,x3,y3,c){tri(g,x1,y1,x2,y2,x3,y3,c);tri(g,N-x1,y1,N-x2,y2,N-x3,y3,c)}
+function ring(g,cx,cy,ri,ro,c){for(var y=0;y<N;y++)for(var x=0;x<N;x++){var d=Math.sqrt((x+.5-cx)*(x+.5-cx)+(y+.5-cy)*(y+.5-cy));if(d>=ri&&d<=ro)px(g,x,y,c)}}
+function outline(g){var o=[];for(var y=0;y<N;y++){o.push(g[y].slice())}
+for(y=0;y<N;y++)for(var x=0;x<N;x++){if(g[y][x])continue;var f=(y>0&&g[y-1][x])||(y<N-1&&g[y+1][x])||(x>0&&g[y][x-1])||(x<N-1&&g[y][x+1]);if(f)o[y][x]=K}
+for(y=0;y<N;y++)g[y]=o[y]}
+function eye(g,x,y,big){var h=big?3:3;rect(g,x,y,x+1,y+h-1,K);px(g,x,y,W)}
+function meye(g,x,y){eye(g,x,y);eye(g,N-2-x,y);px(g,N-2-x,y,K);px(g,N-1-x,y,W)}
+var S={};
+S.capi=function(g){var a='#c18f5b',n='#e8d2a8';
+mell(g,6.5,6.8,2.1,2.1,a);ell(g,12,18,6.8,4.6,a);ell(g,12,11.6,8.6,6.5,a);ell(g,12,14.3,5,3.1,n);
+mell(g,7.6,21.8,2.4,1.3,dk(a,.35));ell(g,12,4.4,2.9,2.3,'#f6a623');tri(g,12.2,2.6,15.2,0.9,14.4,3.4,'#58b868');
+outline(g);mp(g,6,10,K);mp(g,7,10,K);mp(g,8,10,K);mp(g,9,10,K);mp(g,10,13,dk(a,.6));mp(g,11,15,K);mp(g,5,12,PK);mp(g,6,12,PK)};
+S.pitstop=function(g){var a='#f28c38',c='#fff0d9';
+ell(g,20.5,18,3,2.4,a);ell(g,22,19.4,1.6,1.3,W);mtri(g,4.5,9.5,5.2,2.6,10,6.5,a);
+ell(g,12,18.3,5,3.8,a);ell(g,12,19.2,2.8,2.6,c,{flat:1});mell(g,8,21.8,2,1.2,dk(a,.45));
+ell(g,12,11.8,7.6,5.8,a);ell(g,12,14.4,4.2,2.7,c,{flat:1});
+ell(g,12,8.4,7.8,4.8,'#f5f5fa',{ymax:9});rect(g,11,3,12,9,'#e63946');rect(g,5,9,18,9,'#2a3f7a');
+outline(g);meye(g,7,11);mp(g,11,13,K);mp(g,5,14,PK);mp(g,11,15,K)};
+S.tucanino=function(g){var a='#39405c';
+tri(g,4,17,0.8,22,9,21,dk(a,.3));ell(g,10,16.6,6.5,5.4,a);ell(g,11.3,17,3.4,3.8,'#fff3d4',{flat:1});ell(g,7.6,16.6,3,3.6,dk(a,.3));
+ell(g,11,8.6,6,5.5,a);ell(g,17.5,10,5,3,'#f6a623');ell(g,14,9.6,2.2,2.6,'#ffd34d',{flat:1});ell(g,20.4,10,1.8,2.7,'#d9381e');
+rect(g,7,21,9,22,'#f6a623');rect(g,11,21,13,22,'#f6a623');
+outline(g);ell(g,10.6,8,2.6,2.6,'#7fd0ff',{flat:1});rect(g,10,7,11,9,K);px(g,10,7,W);px(g,13,12,PK)};
+S.onca=function(g){var a='#f2c14e',c='#fff6dc',sp=function(x,y){px(g,x,y,K);px(g,x+1,y,K);px(g,x,y+1,K)};
+ell(g,20.5,17.5,2.1,4,a);mell(g,5.8,6.8,2.4,2.4,a);mell(g,5.8,7,1.1,1.1,'#f5a0b0',{flat:1});
+ell(g,12,18.3,5.8,4.2,a);ell(g,12,19.3,3,2.6,c,{flat:1});mell(g,8,21.8,2.2,1.2,c,{flat:1});
+ell(g,12,11.6,8,6.4,a);ell(g,12,14.4,4,2.7,c,{flat:1});outline(g);
+meye(g,7,10);mp(g,11,13,'#e0607e');mp(g,11,15,K);sp(10,5);sp(13,6);sp(4,10);sp(18,10);sp(7,17);sp(15,16);sp(11,19);sp(19,15);px(g,20,19,K);px(g,21,18,K);mp(g,5,13,PK)};
+S.sabiazul=function(g){var a='#4f93f0',b='#d6eaff';
+tri(g,10,18,14,18,12,23.4,dk(a,.3));ell(g,12,12.8,8.4,7.8,a);ell(g,12,15.6,5.2,4.8,b,{flat:1});mell(g,4.8,14,2.4,3.8,dk(a,.2));
+tri(g,10.2,6.4,12,0.4,13.8,6.4,a);mtri(g,7.6,6.8,8.6,2.2,11,6.4,a);rect(g,9,21,10,22,'#f6a623');rect(g,13,21,14,22,'#f6a623');
+tri(g,10,12.6,14,12.6,12,15.6,'#ffb02e');outline(g);meye(g,6,9);mp(g,5,13,PK)};
+S.bemtevi=function(g){var y='#ffd83e';
+tri(g,10,18,14,18,12,23.4,'#6e5438');ell(g,12,12.8,8.2,7.6,y);mell(g,4.6,13.4,2.8,4.5,'#8a6a49');
+ell(g,12,9.6,7.4,4.2,'#3a3330',{ymax:8});rect(g,9,21,10,22,'#f6a623');rect(g,13,21,14,22,'#f6a623');
+tri(g,10.4,12.4,13.6,12.4,12,14.8,'#2a2a2a');outline(g);
+rect(g,4,9,9,9,W);rect(g,14,9,19,9,W);meye(g,7,10);mp(g,5,13,PK)};
+S.grafiteco=function(g){var a='#7b5fd6',w='#5a42b0';
+tri(g,7,11,0.5,8,4,20,w);tri(g,17,11,23.5,8,20,20,w);mtri(g,6,8,6.6,1.6,10.6,6,a);
+rect(g,19,15,21,20,'#2fb8a3');rect(g,19,14,20,14,W);
+ell(g,12,17.6,4.2,4,a);ell(g,12,11.2,6.6,5.4,a);ell(g,12,18.4,2.4,2.6,'#cdb8ff',{flat:1});
+ell(g,12,8,6.6,3.6,'#e8453c',{ymax:8});ell(g,17.5,8.6,4.5,1,'#b92d27',{flat:1});
+outline(g);meye(g,8,10);px(g,10,14,W);px(g,13,14,W);px(g,10,19,'#4cd964');px(g,11,20,'#4cd964');px(g,10,20,'#4cd964');
+px(g,22,12,'#ff6bb5');px(g,23,14,'#ff6bb5');px(g,22,16,'#ff6bb5');mp(g,6,13,PK)};
+S.corujito=function(g){var a='#a07b55',g2='#d9a521';
+mtri(g,5,8.4,5.4,2.4,9.6,5.6,a);ell(g,12,12.6,8.2,8.4,a);ell(g,12,16.8,5,4.4,'#ead4b2',{flat:1});mell(g,4.4,14.6,2.4,4.2,dk(a,.2));
+rect(g,9,21,10,22,'#f6a623');rect(g,13,21,14,22,'#f6a623');
+tri(g,1,5,12,1.4,23,5,'#2b2b45');tri(g,1,5,23,5,12,8.6,'#2b2b45');rect(g,20,5,20,10,'#ffd34d');
+outline(g);mell(g,8,12.6,3.4,3.4,'#fff8e8',{flat:1});rect(g,7,12,8,14,K);px(g,7,12,W);rect(g,15,12,16,14,K);px(g,16,12,W);
+ring(g,8,12.8,3.4,4.3,g2);ring(g,16,12.8,3.4,4.3,g2);px(g,11,12,g2);px(g,12,12,g2);
+tri(g,10.4,15.4,13.6,15.4,12,18,'#f6a623');mp(g,4,17,'#c9a77c');mp(g,6,19,'#c9a77c')};
+S.tanukare=function(g){var a='#8c6b4f',c='#f1dfc0';
+ell(g,20.4,18,2.6,3.2,a);mell(g,4.6,9,2,2,a);ell(g,12,18.2,6,4.1,a);ell(g,12,19,3.6,2.8,c,{flat:1});mell(g,8,21.8,2.2,1.2,dk(a,.4));
+ell(g,12,12,7.6,5.6,a);ell(g,12,14.6,3.8,2.5,c,{flat:1});
+ell(g,12,15.8,5.2,1.4,'#2f9e68',{flat:1});
+tri(g,1.5,8.4,12,0.6,22.5,8.4,'#f0d9a0');ell(g,12,8.4,10.6,1.2,'#d8b873',{flat:1});
+outline(g);mell(g,7.2,11.8,3,2.2,'#3a2a22',{flat:1});meye(g,6,11);mp(g,11,13,K);mp(g,11,15,K);
+px(g,8,16,W);px(g,11,16,W);px(g,14,16,W);px(g,17,16,W);px(g,20,16,'#5a3b2a');px(g,21,17,'#5a3b2a');px(g,20,20,'#5a3b2a');
+rect(g,6,3,6,3,'#d8b873');px(g,10,4,'#d8b873');px(g,14,3,'#d8b873');rect(g,11,7,12,7,'#e63946')};
+S.pincelo=function(g){var a='#f6f0e6';
+ell(g,20.4,17,1.7,4.2,a);ell(g,20.4,13.4,1.6,1.4,'#3ba3ff',{flat:1});
+mtri(g,4.4,9.4,5,3,10,7,a);mtri(g,5.4,8.4,5.8,4.9,8.4,7,'#ffb3c1');
+ell(g,12,18.2,5.2,3.9,a);mell(g,8,21.8,2,1.2,a);ell(g,12,11.8,7.6,6,a);
+ell(g,11,6.6,6.8,2.8,'#d63f3a',{ymax:7});rect(g,10,3,11,4,'#d63f3a');
+outline(g);meye(g,7,11);mp(g,11,13,'#ff8fa3');mp(g,10,14,K);mp(g,11,15,K);
+rect(g,1,13,3,13,K);rect(g,20,13,22,13,K);rect(g,1,15,3,15,K);rect(g,20,15,22,15,K);
+px(g,6,13,'#3ba3ff');px(g,6,14,'#3ba3ff');px(g,5,14,'#3ba3ff');px(g,18,10,'#e63946');px(g,19,11,'#e63946');px(g,9,18,'#ffd34d');px(g,10,19,'#ffd34d');px(g,15,17,'#3ba3ff');
+px(g,19,20,'#8b5a2b');px(g,20,19,'#8b5a2b');px(g,21,18,'#8b5a2b');px(g,22,17,'#ffd34d');px(g,22,16,'#e63946')};
+function egg(col){return function(g){ell(g,12,13,6.8,8.8,col);ell(g,8.6,9,1.4,1.4,W,{flat:1});ell(g,15.4,16.6,1.2,1.2,W,{flat:1});
+outline(g);rect(g,11,11,12,16,W);rect(g,9,13,14,14,W)}}
+S.eggN=egg('#7C6CF0');S.eggS=egg('#2E9CCA');S.eggL=egg('#F2894B');S.eggO=egg('#E0618B');S.eggC=egg('#E3A91E');
+var KEYS={'Capi-Zen':'capi','Pitstop':'pitstop','Tucanino':'tucanino','Onçarê':'onca','Sabiazul':'sabiazul','Bem-te-vi':'bemtevi','Grafiteco':'grafiteco','Corujito':'corujito','Tanukare':'tanukare','Pincelo':'pincelo'};
+var CACHE={};
+function sprite(k){if(!CACHE[k]){var g=newG();S[KEYS[k]||k](g);CACHE[k]=g}return CACHE[k]}
+function spr(n,z){return '<canvas class="spr" data-s="'+n+'" width="24" height="24" role="img" aria-label="Sprite de '+n+'" style="width:'+z+'px;height:'+z+'px"></canvas>'}
+function paint(){document.querySelectorAll('canvas[data-s]').forEach(function(c){var g=sprite(c.dataset.s),x=c.getContext('2d');x.clearRect(0,0,24,24);for(var y=0;y<24;y++)for(var i=0;i<24;i++){if(g[y][i]){x.fillStyle=g[y][i];x.fillRect(i,y,1,1)}}})}
+var SP='<i class="sp a">✦</i><i class="sp b">✧</i><i class="sp c">✦</i>';
+var Z={N:['Zona Norte','var(--N)'],S:['Zona Sul','var(--S)'],L:['Zona Leste','var(--L)'],O:['Zona Oeste','var(--O)'],C:['Centro','var(--C)']};
+var P=[
+['🦜','Tucanino','N','Serra da Cantareira','Comum','Tucano de bico enorme, guardião da mata','+5 CareCoins extras ao visitar um CarePoint'],
+['🐆','Onçarê','N','Horto Florestal','Raro','Onça-pintada de passos silenciosos','+15% de pontos nas missões de caminhada'],
+['🦫','Capi-Zen','S','Parque Ibirapuera','Comum','Capivara que medita à beira do lago','+20% de pontos nas missões de hidratação'],
+['🦊','Pitstop','S','Autódromo de Interlagos','Raro','Raposa piloto de capacete listrado','+15% de pontos nas missões de exercício leve'],
+['🐦','Sabiazul','L','Parque do Carmo','Comum','Sabiá de penas azuis e canto calmo','Escudo da sequência: perdoa 1 dia perdido por mês'],
+['🐤','Bem-te-vi','L','Penha','Comum','Avisa quando é hora de se cuidar','+20% de pontos ao confirmar consulta de rotina'],
+['🦇','Grafiteco','O','Beco do Batman','Raro','Morcego grafiteiro com latas de spray','+5 CareCoins extras ao visitar um CarePoint'],
+['🦉','Corujito','O','USP','Comum','Coruja de óculos e capelo','+20% de pontos nas missões de sono'],
+['🦝','Tanukare','C','Liberdade','Raro','Guaxinim com lenço e chapéu japoneses','Moldura japonesa e título exclusivo no perfil'],
+['🐱','Pincelo','C','MASP, Av. Paulista','Raro','Gato artista com manchas de tinta','Moldura de tinta e título exclusivo no perfil']];
+var f='T';
+function $(i){return document.getElementById(i)}
+function tabs(){var h='<button class="'+(f=='T'?'on':'')+'" data-f="T">Todos</button>';Object.keys(Z).forEach(function(k){h+='<button class="'+(f==k?'on':'')+'" data-f="'+k+'">'+Z[k][0]+'</button>'});$('tabs').innerHTML=h;
+$('tabs').querySelectorAll('button').forEach(function(b){b.onclick=function(){f=b.dataset.f;draw()}})}
+function draw(){tabs();var h=P.filter(function(p){return f=='T'||p[2]==f}).map(function(p){return '<article class="pet'+(p[4]=='Raro'?' rare':'')+'" style="--z:'+Z[p[2]][1]+'">'+(p[4]=='Raro'?SP:'')+'<div class="face">'+spr(p[1],84)+'</div><h3 style="font-size:21px;font-weight:600">'+p[1]+'</h3><div class="chips"><span class="chip">'+Z[p[2]][0]+'</span><span class="chip'+(p[4]=='Raro'?' rr':'')+'">'+(p[4]=='Raro'?'✦ ':'')+p[4]+'</span></div><p style="color:var(--mut);font-size:15px">'+p[5]+'</p><div class="row"><b>Onde encontrar</b>'+p[3]+'</div><div class="row"><b>O que libera</b>'+p[6]+'</div><div class="row"><b>Renovação</b>Revisite o totem a cada 30 dias</div></article>'}).join('');
+if(f=='T')h+=Object.keys(Z).map(function(k){return '<article class="pet leg" style="--z:'+Z[k][1]+'">'+SP+'<div class="face">'+spr('egg'+k,84)+'</div><h3 style="font-size:21px;font-weight:600">Lendário de '+Z[k][0]+'</h3><div class="chips"><span class="chip lgc">★ Lendário</span></div><p style="color:var(--mut);font-size:15px">Surpresa para quem completar todos os pets da região.</p></article>'}).join('');
+$('pets').innerHTML=h;paint()}
+$('cross').innerHTML=Object.keys(Z).map(function(k){var l=P.filter(function(p){return p[2]==k});return '<button class="zone" style="--z:'+Z[k][1]+';grid-area:'+k+'" data-k="'+k+'"><h3>'+Z[k][0]+'</h3><p>'+l.map(function(p){return p[0]+' '+p[1]+' · '+p[3]}).join('<br>')+'</p></button>'}).join('');
+$('cross').querySelectorAll('button').forEach(function(b){b.onclick=function(){f=b.dataset.k;draw();$('s3').scrollIntoView({behavior:'smooth'})}});
+
+var R=[2,1,8,4,7];
+function eq(i){var p=P[i];$('eq').innerHTML='<div class="big"><div class="face" style="--z:'+Z[p[2]][1]+'">'+spr(p[1],92)+'</div><div><span class="chip">Parceiro Care ativo</span><h3 style="font-size:24px;font-weight:600;margin-top:6px">'+p[1]+'</h3><p style="color:var(--mut);font-size:15px">'+p[6]+'</p></div></div><div style="margin-top:16px;font-size:13px;color:var(--mut);font-weight:600">NA RESERVA</div><div class="rsv">'+R.map(function(k){var q=P[k];return '<button data-k="'+k+'" class="'+(k==i?'on':'')+'"><span class="mini" style="--z:'+Z[q[2]][1]+'">'+spr(q[1],30)+'</span>'+q[1]+'</button>'}).join('')+'</div>';
+$('eq').querySelectorAll('button').forEach(function(b){b.onclick=function(){eq(+b.dataset.k)}});paint()}
+$('hs').innerHTML=['Capi-Zen','Pitstop','Tucanino','Onçarê','Pincelo'].map(function(n){return spr(n,58)}).join('');
+eq(2);
+draw();
+var ZO=['N','S','L','O','C'],TC={N:'#fff',S:'#fff',L:'#2b1500',O:'#fff',C:'#2b2000'},DE=[];
+function pad(n){return ('00'+n).slice(-3)}
+function tile(i){var e=DE[i];return '<button class="dt'+(e.leg?' lk lg':(e.p[4]=='Raro'?' rare':''))+'" data-i="'+i+'">'+((e.leg||e.p[4]=='Raro')?SP:'')+'<span class="no">#'+pad(e.n)+'</span><div class="face">'+spr(e.leg?'egg'+e.k:e.p[1],84)+'</div>'+(e.leg?'???':e.p[1])+'</button>'}
+function buildDex(){var n=0,h='';DE=[];ZO.forEach(function(k){var l=P.filter(function(p){return p[2]==k}),a=n+1,t='';
+l.forEach(function(p){n++;DE.push({n:n,k:k,p:p});t+=tile(DE.length-1)});n++;DE.push({n:n,k:k,leg:1});t+=tile(DE.length-1);
+h+='<div class="rg" style="--z:'+Z[k][1]+';--tc:'+TC[k]+'"><div class="rh"><h2 style="font-size:24px">'+Z[k][0]+'</h2><span style="font-weight:600">#'+pad(a)+' a #'+pad(n)+' · '+l.length+' pets + 1 lendário</span></div><div class="rb">'+t+'</div></div>'});$('dbody').innerHTML=h}
+function tipHTML(e){var t='font-size:20px;font-weight:600;margin:6px 0 2px';if(e.leg)return '<span class="chip lgc">#'+pad(e.n)+' · ★ Lendário</span><h3 style="'+t+'">???</h3><p style="color:var(--mut);font-size:14px">Ovo misterioso de '+Z[e.k][0]+'.</p><div class="row"><b>Como desbloquear</b>Registre todos os pets desta região para revelar o lendário.</div>';
+var p=e.p;return '<span class="chip'+(p[4]=='Raro'?' rr':'')+'">#'+pad(e.n)+' · '+Z[e.k][0]+' · '+(p[4]=='Raro'?'✦ ':'')+p[4]+'</span><h3 style="'+t+'">'+p[1]+'</h3><p style="color:var(--mut);font-size:14px">'+p[5]+'</p><div class="row"><b>Onde encontrar</b>CarePoint '+p[3]+'</div><div class="row"><b>O que libera</b>'+p[6]+'</div><div class="row"><b>Renovação</b>Revisite o totem a cada 30 dias</div>'}
+var dt=$('dtip');
+function showTip(b){var e=DE[+b.dataset.i];dt.style.setProperty('--z',Z[e.k][1]);dt.innerHTML=tipHTML(e);dt.style.display='block';var r=b.getBoundingClientRect(),w=dt.offsetWidth,h=dt.offsetHeight,x=Math.min(Math.max(8,r.left+r.width/2-w/2),window.innerWidth-w-8),y=r.top-h-10;if(y<8)y=r.bottom+10;if(y+h>window.innerHeight-8)y=Math.max(8,window.innerHeight-h-8);dt.style.left=x+'px';dt.style.top=y+'px'}
+function hideTip(){dt.style.display='none'}
+function tl(ev){return ev.target.closest&&ev.target.closest('.dt')}
+var dbd=$('dbody');
+dbd.addEventListener('mouseover',function(ev){var b=tl(ev);if(b)showTip(b)});dbd.addEventListener('mouseout',function(ev){if(tl(ev))hideTip()});
+dbd.addEventListener('focusin',function(ev){var b=tl(ev);if(b)showTip(b)});dbd.addEventListener('focusout',hideTip);
+dbd.addEventListener('click',function(ev){var b=tl(ev);if(b)showTip(b)});
+$('dexov').addEventListener('click',function(ev){if(!tl(ev))hideTip()});$('dexov').addEventListener('scroll',hideTip);
+function openDex(){if(!DE.length)buildDex();$('dexov').style.display='block';document.body.style.overflow='hidden';$('dexov').scrollTop=0;paint();$('dclose').focus()}
+function closeDex(){$('dexov').style.display='none';document.body.style.overflow='';hideTip();$('godex').focus()}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$('dexov').style.display==='block')closeDex()});
+$('godex').onclick=openDex;$('dclose').onclick=closeDex;
+$('cs').innerHTML=Object.keys(KEYS).map(function(n){return spr(n,52)}).join('');paint();
+var tg=$('tg');
+function setT(d){document.documentElement.setAttribute('data-theme',d?'dark':'light');tg.textContent=d?'☀️ Tema claro':'🌙 Tema escuro';try{localStorage.setItem('cdx-theme',d?'dark':'light')}catch(e){}}
+var sv=null;try{sv=localStorage.getItem('cdx-theme')}catch(e){}
+setT(sv=='dark');
+tg.onclick=function(){setT(document.documentElement.getAttribute('data-theme')!='dark')};
+</script></body></html>
